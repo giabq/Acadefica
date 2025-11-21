@@ -1,7 +1,7 @@
 // src/components/Footer.tsx
 
 import React from 'react';
-import { Layout, Typography, Row, Col, Form, Input, Button, Space } from 'antd';
+import { Layout, Typography, Row, Col, Form, Input, Button, Space, message } from 'antd';
 import { GithubOutlined, LinkedinOutlined, InstagramOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph, Link } = Typography;
@@ -18,8 +18,28 @@ const Footer: React.FC = () => {
     marginRight: '20px',
   };
 
+  const [form] = Form.useForm();
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const storedPlan = window.sessionStorage.getItem('acadefica_selected_plan');
+    if (storedPlan) {
+      form.setFieldsValue({ plano: storedPlan });
+    }
+  }, [form]);
+
+  const handleSubmit = () => {
+    message.success('Recebemos seu interesse! Em breve um especialista retornará.');
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.removeItem('acadefica_selected_plan');
+    }
+    form.resetFields();
+  };
+
   return (
-    <Layout style={footerStyle}>
+    <Layout id="contact" style={footerStyle}>
       <Row gutter={[32, 32]} justify="space-between">
         
         {/* Formulário CTA Final */}
@@ -31,15 +51,19 @@ const Footer: React.FC = () => {
             Preencha e solicite o contato de um especialista agora mesmo.
           </Paragraph>
           
-          <Form layout="vertical" style={{ marginTop: '20px' }}>
-            <Form.Item label="Nome" style={{ color: 'var(--color-text-secondary)' }}>
+          <Form layout="vertical" style={{ marginTop: '20px' }} form={form} onFinish={handleSubmit}>
+            <Form.Item name="nome" label="Nome" rules={[{ required: true, message: 'Informe seu nome' }]}
+              style={{ color: 'var(--color-text-secondary)' }}>
               <Input placeholder="Seu nome" style={{ backgroundColor: '#2B2B2B', borderColor: '#444', color: 'var(--color-text-light)' }} />
             </Form.Item>
-            <Form.Item label="Nome da Academia">
+            <Form.Item name="academia" label="Nome da Academia" rules={[{ required: true, message: 'Informe o nome da academia' }]}>
               <Input placeholder="Nome da academia" style={{ backgroundColor: '#2B2B2B', borderColor: '#444', color: 'var(--color-text-light)' }} />
             </Form.Item>
-            <Form.Item label="E-mail">
+            <Form.Item name="email" label="E-mail" rules={[{ required: true, type: 'email', message: 'Digite um e-mail válido' }]}>
               <Input type="email" placeholder="Seu melhor e-mail" style={{ backgroundColor: '#2B2B2B', borderColor: '#444', color: 'var(--color-text-light)' }} />
+            </Form.Item>
+            <Form.Item name="plano" label="Plano de Interesse">
+              <Input placeholder="Selecione um plano no card" readOnly style={{ backgroundColor: '#2B2B2B', borderColor: '#444', color: 'var(--color-text-secondary)' }} />
             </Form.Item>
             <Button 
               type="primary" 

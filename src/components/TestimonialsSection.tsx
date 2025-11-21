@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Layout, Typography, Row, Col, Card } from 'antd';
-import  QuotesIcon  from '@ant-design/icons';
+import { CommentOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
 
@@ -14,7 +14,7 @@ const TestimonialsSection: React.FC = () => {
   };
 
   return (
-    <Layout style={{ padding: '50px', backgroundColor: 'var(--color-dark-background)' }}>
+    <Layout id="testimonials" style={{ padding: '50px', backgroundColor: 'var(--color-dark-background)' }}>
       <Title level={2} style={{ color: 'var(--color-text-light)', textAlign: 'center', marginBottom: '50px' }}>
         Quem Confia no Poder da Previsão
       </Title>
@@ -23,7 +23,7 @@ const TestimonialsSection: React.FC = () => {
         {/* Depoimento 1 */}
         <Col xs={24} md={12}>
           <Card style={testimonialCardStyle}>
-            <QuotesIcon style={{ fontSize: '24px', color: 'var(--color-primary-yellow)' }} />
+            <CommentOutlined style={{ fontSize: '24px', color: 'var(--color-primary-yellow)' }} />
             <Paragraph style={{ color: 'var(--color-text-light)', fontStyle: 'italic', marginTop: '15px' }}>
               "Nossa retenção aumentou em 30% logo no primeiro trimestre! Foi um ROI imediato."
             </Paragraph>
@@ -39,7 +39,7 @@ const TestimonialsSection: React.FC = () => {
         {/* Depoimento 2 */}
         <Col xs={24} md={12}>
           <Card style={testimonialCardStyle}>
-            <QuotesIcon style={{ fontSize: '24px', color: 'var(--color-primary-yellow)' }} />
+            <CommentOutlined style={{ fontSize: '24px', color: 'var(--color-primary-yellow)' }} />
             <Paragraph style={{ color: 'var(--color-text-light)', fontStyle: 'italic', marginTop: '15px' }}>
               "A plataforma é intuitiva, e agora sabemos exatamente em quem focar nosso esforço de relacionamento."
             </Paragraph>
