@@ -3,6 +3,7 @@
 import React from 'react';
 import { Layout, Typography, Row, Col, Card, Button } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import { scrollToSection } from '../utils/navigation';
 
 const { Title, Paragraph } = Typography;
 
@@ -22,8 +23,15 @@ const PricingSection: React.FC = () => {
     fontWeight: 'bold',
   };
 
+  const handleSelectPlan = (planName: string) => {
+    scrollToSection('contact');
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem('acadefica_selected_plan', planName);
+    }
+  };
+
   return (
-    <Layout style={{ padding: '50px', backgroundColor: 'var(--color-dark-background)' }}>
+    <Layout id="pricing" style={{ padding: '50px', backgroundColor: 'var(--color-dark-background)' }}>
       
       <Title level={2} style={{ color: 'var(--color-text-light)', textAlign: 'center', marginBottom: '10px' }}>
         Escolha o Plano Ideal para o Tamanho da Sua Academia
@@ -60,7 +68,13 @@ const PricingSection: React.FC = () => {
                 <Paragraph><CheckOutlined style={{ color: 'var(--color-primary-yellow)' }} /> Score de Risco Essencial</Paragraph>
                 <Paragraph><CheckOutlined style={{ color: 'var(--color-primary-yellow)' }} /> 1 Usuário</Paragraph>
             </div>
-            <Button type="primary" size="large" block style={ctaButton}>
+            <Button
+              type="primary"
+              size="large"
+              block
+              style={ctaButton}
+              onClick={() => handleSelectPlan('Plano Start')}
+            >
               Contratar
             </Button>
           </Card>
@@ -81,7 +95,13 @@ const PricingSection: React.FC = () => {
                 <Paragraph><CheckOutlined style={{ color: 'var(--color-primary-yellow)' }} /> Relatórios Personalizados</Paragraph>
                 <Paragraph><CheckOutlined style={{ color: 'var(--color-primary-yellow)' }} /> 5 Usuários</Paragraph>
             </div>
-            <Button type="primary" size="large" block style={ctaButton}>
+            <Button
+              type="primary"
+              size="large"
+              block
+              style={ctaButton}
+              onClick={() => handleSelectPlan('Plano Pro')}
+            >
               Contratar
             </Button>
           </Card>
@@ -101,7 +121,12 @@ const PricingSection: React.FC = () => {
                 <Paragraph><CheckOutlined style={{ color: 'var(--color-primary-yellow)' }} /> Suporte Dedicado 24h</Paragraph>
                 <Paragraph><CheckOutlined style={{ color: 'var(--color-primary-yellow)' }} /> Usuários Ilimitados</Paragraph>
             </div>
-            <Button size="large" block style={{ ...ctaButton, backgroundColor: '#333', borderColor: '#333', color: 'var(--color-primary-yellow)' }}>
+            <Button
+              size="large"
+              block
+              style={{ ...ctaButton, backgroundColor: '#333', borderColor: '#333', color: 'var(--color-primary-yellow)' }}
+              onClick={() => handleSelectPlan('Plano Enterprise')}
+            >
               Solicitar Cotação
             </Button>
           </Card>
