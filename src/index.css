@@ -1,0 +1,19 @@
+/* src/index.css */
+
+/* Define as variáveis de cores para fácil acesso em todos os componentes */
+:root {
+  --color-dark-background: #0D0D0D; /* Fundo principal escuro */
+  --color-secondary-background: #1A1A1A; /* Fundo de cards e seções */
+  --color-primary-yellow: #FFD700; /* Amarelo Vibrante (Ação/Destaque) */
+  --color-text-light: #FFFFFF; /* Texto principal */
+  --color-text-secondary: #AAAAAA; /* Texto de apoio */
+}
+
+body {
+  margin: 0;
+  /* Aplica a nova fonte */
+  font-family: 'Poppins', sans-serif; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-dark-background);
+}
