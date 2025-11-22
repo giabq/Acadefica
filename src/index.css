@@ -7,6 +7,7 @@
   --color-primary-yellow: #FFD700; /* Amarelo Vibrante (Ação/Destaque) */
   --color-text-light: #FFFFFF; /* Texto principal */
   --color-text-secondary: #AAAAAA; /* Texto de apoio */
+  
 }
 
 body {
@@ -16,4 +17,60 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-dark-background);
+}
+
+/* src/index.css (AJUSTE NECESSÁRIO) */
+
+/* ... (Estilos da Sidebar do passo anterior) */
+
+/* ------------------------------------------------ */
+/* CORREÇÃO DO HOVER DA SIDEBAR (MOVENDO VARIÁVEIS CSS) */
+/* ------------------------------------------------ */
+
+/* Define a cor de hover (Amarelo transparente) em todos os itens de menu no tema dark */
+.ant-menu-dark .ant-menu-item:not(.ant-menu-item-selected):hover {
+    background-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+/* Garante que o item selecionado tenha o fundo amarelo (Cor principal) */
+.ant-menu-dark .ant-menu-item-selected {
+    background-color: var(--color-primary-yellow) !important;
+}
+
+/* Força a cor do texto e ícone para o cinza escuro (#505050) no item SELECIONADO */
+.ant-menu-item-selected .ant-menu-title-content,
+.ant-menu-item-selected .anticon {
+    color: #505050 !important;
+}
+
+/* Mantém os itens não selecionados na cor branca */
+.ant-menu-item .ant-menu-title-content,
+.ant-menu-item .anticon {
+    color: var(--color-text-light);
+}
+
+/* Garante que o ícone do item selecionado fique cinza escuro (#505050) */
+.ant-menu-item-selected .anticon {
+    color: #505050 !important;
+}
+
+/* src/index.css (Regras para o botão Sair) */
+
+/* ------------------------------------------------ */
+/* ESTILOS DO BOTÃO SAIR (HEADER INTERNO) */
+/* ------------------------------------------------ */
+
+.logout-btn.ant-btn-default {
+    /* Estado Normal: Texto e Borda Amarelos, Fundo Transparente */
+    color: var(--color-primary-yellow) !important;
+    border-color: var(--color-primary-yellow) !important;
+    background-color: transparent !important;
+}
+
+.logout-btn.ant-btn-default:hover,
+.logout-btn.ant-btn-default:focus {
+    /* Estado Hover: Fundo Amarelo, Texto Cinza Escuro */
+    color: #505050 !important;
+    background-color: var(--color-primary-yellow) !important;
+    border-color: var(--color-primary-yellow) !important;
 }
