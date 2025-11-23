@@ -27,8 +27,10 @@ const themeConfig: ThemeConfig = {
         
         // Aplica o cinza escuro (#505050) no estado normal
         colorText: '#505050', 
-        
+      
      
+      
+      
         
         borderRadius: 8,
     },

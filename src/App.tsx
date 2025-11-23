@@ -17,6 +17,10 @@ import Footer from './components/Footer';
 // Importa as páginas internas (Protegidas pelo DashboardLayout)
 import Dashboard from './pages/Dashboard';
 import StudentsList from './pages/StudentsList'; 
+import NewUnit from './pages/NewUnit';
+import UnitsList from './pages/UnitsList';
+import UnitDetails from './pages/UnitDetails';
+import UnitEdit from './pages/UnitEdit';
 
 const { Content } = Layout;
 
@@ -52,6 +56,17 @@ const App: React.FC = () => {
 
           {/* Rota 3: Lista de Alunos (URL: /alunos) */}
           <Route path="/alunos" element={<StudentsList />} /> 
+
+          {/* Rota 4: Nova Unidade (Nova Rota) */}
+          <Route path="/unidades/nova" element={<NewUnit />} />
+
+          {/* Rota 5: Lista de Unidades (Nova Rota) */}
+          <Route path="/unidades" element={<UnitsList />} />
+
+          <Route path="/unidades/:id" element={<UnitDetails />} />
+
+          {/* Rota Dinâmica para Edição da Unidade (Nova Rota) */}
+          <Route path="/unidades/:id/editar" element={<UnitEdit />} />
 
         </Routes>
       </Router>
