@@ -1,15 +1,17 @@
 // src/components/Header.tsx
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Typography, Space, Image, Button } from 'antd';
-import { MailOutlined, PhoneOutlined, LogoutOutlined } from '@ant-design/icons';
+import { MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import AcadeficaLogo from '../assets/logo-acadefica.png'; 
-import {  useNavigate } from 'react-router-dom'; // Importado para navegação
+import { useNavigate } from 'react-router-dom';
+
+// Importamos o serviço para buscar o nome real
+import { getGymName } from '../services/StudentService'; 
 
 const { Header: AntHeader } = Layout;
 const { Text } = Typography;
 
-// Definição da interface de Props
 interface HeaderProps {
     isInternalPage?: boolean;
 }
@@ -29,30 +31,42 @@ const headerStyle: React.CSSProperties = {
 
 const Header: React.FC<HeaderProps> = ({ isInternalPage = false }) => {
   const navigate = useNavigate();
+  // Estado para guardar o nome da academia
+  const [gymName, setGymName] = useState<string>('Academia'); 
 
-  // --- Funções de Ação (Mockadas) ---
-  const handleLogout = React.useCallback(() => {
-    alert('Deslogando o usuário...');
-    navigate('/'); // Redireciona para a Landing Page após sair
-  }, [navigate]);
+  // Efeito para buscar o nome da academia se for página interna
+  useEffect(() => {
+    if (isInternalPage) {
+        const fetchName = async () => {
+            try {
+                const name = await getGymName();
+                // Remove as aspas extras caso venham na string do JSON
+                setGymName(name.replace(/"/g, '')); 
+            } catch (error) {
+                console.error("Erro ao carregar nome da academia:", error);
+                setGymName("Academia Exemplo"); // Fallback em caso de erro
+            }
+        };
+        fetchName();
+    }
+  }, [isInternalPage]);
   
   const handleLogin = React.useCallback(() => {
     window.open('https://app.acadefica.com/login', '_blank', 'noopener,noreferrer');
   }, []);
 
   const handleScheduleDemo = React.useCallback(() => {
-    // Simula scroll para a seção de contato na Landing Page
     const contactSection = document.getElementById('contact');
     if (contactSection) {
         contactSection.scrollIntoView({ behavior: 'smooth' });
     } else {
-        alert('Seção de contato não encontrada (mock scroll).');
+        // Se não achar a seção (ex: em outra rota), vai para home
+        navigate('/');
     }
-  }, []);
+  }, [navigate]);
 
   // --- Renderização Condicional ---
   
-  // Conteúdo para a Landing Page (Ações de Venda)
   const renderExternalContent = () => (
     <Space size="large" align="center">
       <Space size="large" align="center">
@@ -80,41 +94,23 @@ const Header: React.FC<HeaderProps> = ({ isInternalPage = false }) => {
     </Space>
   );
 
-  // Conteúdo para a Área Interna (Usuário Logado)
   const renderInternalContent = () => (
     <Space size="large" align="center">
-        <Text style={{ color: 'var(--color-text-light)', fontWeight: 600 }}>
-            Olá, Academia Exemplo
+        {/* Exibe o nome vindo do backend */}
+        <Text style={{ color: 'var(--color-text-light)', fontWeight: 600, fontSize: '16px' }}>
+            Olá, <span style={{ color: 'var(--color-primary-yellow)' }}>{gymName}</span>
         </Text>
-        <Button 
-            type="default" 
-            onClick={handleLogout} 
-            icon={<LogoutOutlined />} 
-            
-            // ADICIONAR CLASSE E REMOVER VARIÁVEIS CSS DE ESTILO INLINE
-            className="logout-btn" 
-            style={{ 
-                fontWeight: 400,
-                fontSize: 14,
-                // Mantemos apenas os estilos que não causam erro de tipagem, mas o CSS fará o resto
-                color: 'var(--color-primary-yellow)', 
-                borderColor: 'var(--color-primary-yellow)',
-            }}
-        >
-            Sair
-        </Button>
     </Space>
   );
 
   return (
     <AntHeader style={headerStyle}>
-      {/* Logotipo (ACADEFICA) - Permanece o mesmo em ambos os contextos */}
       <Space style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
         <Image 
           src={AcadeficaLogo} 
           alt="ACADEFICA Logo" 
           preview={false} 
-          style={{ height: '40px', width: 'auto' }} 
+          style={{ height: '70px', width: 'auto' }} 
         />
       </Space>
 

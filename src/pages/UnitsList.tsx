@@ -1,8 +1,8 @@
-// src/pages/UnitsList.tsx (UnitsListPage.tsx)
+// src/pages/UnitsList.tsx
 
-import React from 'react';
-import { Typography, Table, Input, Tag, Space, Button, Dropdown,  } from 'antd';
-import type { TableProps, MenuProps} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Typography, Table, Input, Tag, Space, Button, Dropdown,  Spin } from 'antd';
+import type {TableProps, MenuProps} from 'antd';
 import { 
     SearchOutlined, 
     EditOutlined, 
@@ -10,16 +10,19 @@ import {
     EnvironmentOutlined, 
     PlusCircleOutlined,
     MoreOutlined, 
-    FolderOutlined, // Usado para Arquivar/Reativar
+    FolderOutlined, 
     EyeOutlined 
 } from '@ant-design/icons';
 import AppLayout from '../layout/AppLayout';
-import { useNavigate } from 'react-router-dom'; // NECESSÁRIO para o hook
+import { useNavigate } from 'react-router-dom';
+
+// Importamos os serviços de Alunos e Predições para cálculo local
+import { getAllStudents, getStudentsPredictions } from '../services/StudentService';
 
 const { Title, Paragraph, Text } = Typography;
 
 // ------------------------------------
-// 1. Tipagem e Dados Mock
+// 1. Tipagem
 // ------------------------------------
 
 interface Unit {
@@ -28,66 +31,121 @@ interface Unit {
   localizacao: string;
   responsavel: string;
   status: 'Ativo' | 'Em Construção' | 'Inativo';
-  alunos_ativos: number;
-  taxa_retencao_3m: number; 
+  total_alunos: number; // Renomeado para refletir que são todos
+  taxa_evasao: number; 
 }
 
-const mockUnits: Unit[] = [
-  { id: 101, nome: 'Unidade Centro', localizacao: 'São Paulo/SP', responsavel: 'Felipe Dantas', status: 'Ativo', alunos_ativos: 450, taxa_retencao_3m: 92.5 },
-  { id: 102, nome: 'Unidade Zona Sul', localizacao: 'Rio de Janeiro/RJ', responsavel: 'Clara Mendes', status: 'Ativo', alunos_ativos: 620, taxa_retencao_3m: 88.0 },
-  { id: 103, nome: 'Franquia Leste', localizacao: 'Belo Horizonte/MG', responsavel: 'Roberto Alencar', status: 'Em Construção', alunos_ativos: 0, taxa_retencao_3m: 0 },
-  { id: 104, nome: 'Unidade Oeste', localizacao: 'São Paulo/SP', responsavel: 'Juliana Pires', status: 'Inativo', alunos_ativos: 120, taxa_retencao_3m: 75.3 },
-  { id: 105, nome: 'Unidade Alphaville', localizacao: 'Barueri/SP', responsavel: 'Marcos Silva', status: 'Ativo', alunos_ativos: 380, taxa_retencao_3m: 95.1 },
-];
+// ------------------------------------
+// 2. Metadados Estáticos
+// ------------------------------------
+const unitMetadata: Record<string, { local: string; resp: string }> = {
+    "centro": { local: "Av. Paulista, 1000 - SP", resp: "Felipe Dantas" },
+    "zona sul": { local: "Rua Vergueiro, 800 - SP", resp: "Clara Mendes" },
+    "zona leste": { local: "Tatuapé, SP", resp: "Roberto Alencar" },
+    "zona oeste": { local: "Pinheiros, SP", resp: "Juliana Pires" },
+    "zona norte": { local: "Santana, SP", resp: "Marcos Silva" },
+    "alphaville": { local: "Barueri, SP", resp: "Ana Beatriz" }
+};
 
 // ------------------------------------
-// 2. Componente Principal
+// 3. Componente Principal
 // ------------------------------------
 
 const UnitsList: React.FC = () => {
-  // Inicialização do hook de navegação (CORREÇÃO DO ERRO)
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const [units, setUnits] = useState<Unit[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Função para criar o menu dropdown com todas as ações
+  useEffect(() => {
+    const fetchAndProcessData = async () => {
+        setLoading(true);
+        try {
+            const [allStudents, allPredictions] = await Promise.all([
+                getAllStudents(),
+                getStudentsPredictions()
+            ]);
+            
+            const predictionMap = new Map<number, number>();
+            allPredictions.forEach((p: any) => {
+                const val = p.predicao !== undefined ? p.predicao : p["Regressão Logística_Prediction"];
+                predictionMap.set(p.aluno_id, val);
+            });
+
+            const unitsStats: Record<string, { total: number; highRisk: number }> = {};
+
+            allStudents.forEach(student => {
+                const unitName = student.unidade ? student.unidade.toLowerCase().trim() : 'desconhecida';
+                
+                if (!unitsStats[unitName]) {
+                    unitsStats[unitName] = { total: 0, highRisk: 0 };
+                }
+
+                unitsStats[unitName].total += 1;
+
+                const pred = predictionMap.get(student.aluno_id);
+                if (pred === 1) {
+                    unitsStats[unitName].highRisk += 1;
+                }
+            });
+
+            const processedUnits = Object.keys(unitsStats).map((name, index) => {
+                const stats = unitsStats[name];
+                const meta = unitMetadata[name] || { local: "Localização não cadastrada", resp: "N/A" };
+                const riskRate = (stats.highRisk / stats.total) * 100;
+                
+
+                // --- CORREÇÃO AQUI ---
+                // Forçamos a tipagem para garantir que bate com a Interface Unit
+                const statusCalculado: 'Ativo' | 'Em Construção' | 'Inativo' = stats.total > 0 ? 'Ativo' : 'Inativo';
+
+                return {
+                    id: index + 1,
+                    nome: name.charAt(0).toUpperCase() + name.slice(1),
+                    localizacao: meta.local,
+                    responsavel: meta.resp,
+                    status: statusCalculado, // Usamos a variável tipada
+                    total_alunos: stats.total,
+                    taxa_evasao: Number(riskRate.toFixed(1))
+                };
+            });
+
+            setUnits(processedUnits);
+
+        } catch (error) {
+            console.error("Erro ao processar unidades:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchAndProcessData();
+  }, []);
+
   const getUnitActions = (unit: Unit): MenuProps['items'] => [
       {
         key: 'edit',
         label: 'Editar Unidade',
         icon: <EditOutlined />,
         onClick: () => {
-          // AÇÃO DE NAVEGAÇÃO CORRETA: Redireciona para a rota dinâmica de EDIÇÃO
-          navigate(`/unidades/${unit.id}/editar`); 
+          alert(`Abrir edição: ${unit.nome}`);
         },
       },
       {
         key: 'view',
         label: 'Ver Mais Detalhes',
         icon: <EyeOutlined />,
-        onClick: () => {
-          // Navegação para a rota dinâmica de detalhes
-          navigate(`/unidades/${unit.id}`); 
-        },
+        onClick: () => navigate(`/unidades/${unit.id}`), 
       },
       {
         key: 'archive',
-        label: unit.status !== 'Inativo' ? 'Arquivar Unidade' : 'Reativar Unidade',
+        label: 'Arquivar Unidade',
         icon: <FolderOutlined />, 
         danger: true, 
-        onClick: () => {
-          alert(`Ação de Arquivar/Reativar para: ${unit.nome}`);
-        },
+        onClick: () => alert(`Arquivar: ${unit.nome}`),
       },
   ];
 
-  // Definição das Colunas (agora dentro do componente para usar o getUnitActions)
   const columns: TableProps<Unit>['columns'] = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      sorter: (a, b) => a.id - b.id,
-      render: (text: number) => <Text style={{ color: 'var(--color-text-light)' }}>{text}</Text>,
-    },
     {
       title: 'Nome da Unidade',
       dataIndex: 'nome',
@@ -107,47 +165,32 @@ const UnitsList: React.FC = () => {
       ),
     },
     {
-      title: 'Alunos Ativos',
-      dataIndex: 'alunos_ativos',
-      key: 'alunos_ativos',
-      sorter: (a, b) => a.alunos_ativos - b.alunos_ativos,
+      title: 'Responsável',
+      dataIndex: 'responsavel',
+      key: 'responsavel',
+      render: (text: string) => <Text style={{ color: 'var(--color-text-light)' }}>{text}</Text>,
+    },
+    {
+      title: 'Total de Alunos', // Renomeado para refletir que não são só ativos
+      dataIndex: 'total_alunos',
+      key: 'total_alunos',
+      sorter: (a, b) => a.total_alunos - b.total_alunos,
       render: (alunos: number) => <Text style={{ color: 'var(--color-text-light)' }}>{alunos}</Text>,
     },
     {
-      title: 'Taxa Retenção (3m)',
-      dataIndex: 'taxa_retencao_3m',
-      key: 'taxa_retencao_3m',
-      sorter: (a, b) => a.taxa_retencao_3m - b.taxa_retencao_3m,
+      title: 'Probabilidade evasão',
+      dataIndex: 'taxa_evasao',
+      key: 'taxa_evasao',
+      sorter: (a, b) => a.taxa_evasao - b.taxa_evasao ,
       render: (taxa: number) => {
-          let color = taxa > 90 ? 'green' : (taxa > 80 ? 'orange' : 'red');
+          let color = taxa > 70 ? '#FF4D4F' : (taxa >= 50 ? '#FAAD14' : '#52C41A');
+          
           return (
-              <Tag color={color} icon={<BarChartOutlined />}>
+              <Tag color={color} style={{ fontWeight: 'bold', fontSize: '14px', padding: '4px 8px' }}>
+                  <BarChartOutlined style={{ marginRight: '5px' }} />
                   {taxa}%
               </Tag>
           );
-      },
-    },
-    {
-      title: 'Status Operacional',
-      dataIndex: 'status',
-      key: 'status',
-      filters: [
-          { text: 'Ativo', value: 'Ativo' },
-          { text: 'Em Construção', value: 'Em Construção' },
-          { text: 'Inativo', value: 'Inativo' },
-      ],
-      onFilter: (value, record) => record.status.startsWith(value as string),
-      render: (status: string) => {
-        const colorMap = {
-          'Ativo': 'green',
-          'Em Construção': 'blue',
-          'Inativo': 'red',
-        };
-        return (
-          <Tag color={colorMap[status as keyof typeof colorMap]} style={{ minWidth: '110px', textAlign: 'center' }}>
-            {status}
-          </Tag>
-        );
       },
     },
     {
@@ -159,7 +202,6 @@ const UnitsList: React.FC = () => {
             menu={{ items: getUnitActions(record) }} 
             trigger={['click']}
             placement="bottomRight"
-            // Garante que o dropdown combine com o tema escuro
             dropdownRender={(menu) => (
               <div style={{ backgroundColor: '#1A1A1A', borderRadius: '4px', border: '1px solid #333' }}>
                 {menu}
@@ -190,10 +232,9 @@ const UnitsList: React.FC = () => {
           Visão Geral das Unidades
         </Title>
         <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: '30px' }}>
-          Acompanhe o desempenho e status de todas as suas unidades.
+          Acompanhe o desempenho e status de todas as suas unidades (Baseado em IA).
         </Paragraph>
         
-        {/* Barra de Busca e Ações */}
         <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Input
             placeholder="Buscar unidade por nome ou localização..."
@@ -208,23 +249,31 @@ const UnitsList: React.FC = () => {
           <Button
               type="primary"
               icon={<PlusCircleOutlined />}
-              onClick={() => navigate('/unidades/nova')} // Agora com a navegação correta
+              onClick={() => navigate('/unidades/nova')}
               style={{ backgroundColor: 'var(--color-primary-yellow)', color: '#505050', fontWeight: 'bold' }}
           >
               Nova Unidade
           </Button>
         </div>
 
-        {/* Tabela de Unidades */}
-        <Table
-          dataSource={mockUnits}
-          columns={columns}
-          rowKey="id"
-          pagination={{ pageSize: 10, position: ['bottomCenter'] }}
-          style={tableStyle}
-          scroll={{ x: 'max-content' }}
-          className="ant-table-dark-theme" 
-        />
+        {loading ? (
+            <div style={{ textAlign: 'center', padding: '50px' }}>
+                <Spin size="large" />
+                <Text style={{ display: 'block', marginTop: '10px', color: 'var(--color-text-secondary)' }}>
+                    Calculando métricas de retenção...
+                </Text>
+            </div>
+        ) : (
+            <Table
+              dataSource={units}
+              columns={columns}
+              rowKey="id"
+              pagination={{ pageSize: 10, position: ['bottomCenter'], style: { backgroundColor: 'var(--color-secondary-background)' } }}
+              style={tableStyle}
+              scroll={{ x: 'max-content' }}
+              className="ant-table-dark-theme" 
+            />
+        )}
       </div>
     </AppLayout>
   );
