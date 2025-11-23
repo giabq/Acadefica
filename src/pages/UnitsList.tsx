@@ -118,8 +118,8 @@ const UnitsList: React.FC = () => {
       dataIndex: 'taxa_retencao_3m',
       key: 'taxa_retencao_3m',
       sorter: (a, b) => a.taxa_retencao_3m - b.taxa_retencao_3m,
-      render: (taxa: number) => {
-          let color = taxa > 90 ? 'green' : (taxa > 80 ? 'orange' : 'red');
+        render: (taxa: number) => {
+          const color = taxa > 90 ? 'green' : (taxa > 80 ? 'orange' : 'red');
           return (
               <Tag color={color} icon={<BarChartOutlined />}>
                   {taxa}%
