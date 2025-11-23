@@ -9,19 +9,10 @@ import { SaveOutlined, EnvironmentOutlined, PhoneOutlined, MailOutlined, FileExc
 const { Title, Paragraph, Text } = Typography; // <-- AGORA COM TEXT
 const { Option } = Select; // <-- AGORA COM OPTION
 
-interface NewUnitFormValues {
-  nome: string;
-  status: 'Ativo' | 'Inativo' | 'Em Construção';
-  capacidade: number;
-  telefone: string;
-  email: string;
-  endereco: string;
-}
-
 const NewUnit: React.FC = () => {
   const [form] = Form.useForm();
 
-  const handleFinish = (values: NewUnitFormValues) => {
+  const handleFinish = (values: any) => {
     console.log('Dados da Nova Unidade:', values);
     alert('Nova Unidade cadastrada com sucesso! (Mock)');
     // Aqui você enviaria os dados para a API

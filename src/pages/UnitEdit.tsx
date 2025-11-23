@@ -9,19 +9,10 @@ import { SaveOutlined, EnvironmentOutlined, PhoneOutlined, MailOutlined, ArrowLe
 const { Title, Paragraph, Text } = Typography;
 const { Option } = Select;
 
-interface UnitFormValues {
-  nome: string;
-  status: 'Ativo' | 'Inativo' | 'Em Construção';
-  capacidade: number;
-  telefone: string;
-  email: string;
-  endereco: string;
-}
-
 // Mock de dados para uma unidade para simular a busca
-const mockFetchUnitData = (id: string): Promise<UnitFormValues> => {
+const mockFetchUnitData = (id: string) => {
     // Simula o tempo de carregamento da API
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         setTimeout(() => {
             resolve({
                 nome: `Unidade Teste ${id}`,
@@ -41,30 +32,23 @@ const UnitEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-    const [unitData, setUnitData] = useState<UnitFormValues | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Efeito para carregar os dados ao montar
-    useEffect(() => {
-        if (!id) {
-            return;
-        }
-
-        let isMounted = true;
-        mockFetchUnitData(id).then((data) => {
-            if (!isMounted) {
-                return;
-            }
-            setUnitData(data);
-            form.setFieldsValue(data);
-        });
-
-        return () => {
-            isMounted = false;
-        };
-    }, [id, form]);
+  useEffect(() => {
+    if (id) {
+      mockFetchUnitData(id).then((data: any) => {
+        // Preenche o formulário com os dados carregados
+        form.setFieldsValue(data); 
+        setLoading(false);
+      });
+    } else {
+        setLoading(false);
+    }
+  }, [id, form]);
 
 
-    const handleFinish = (values: UnitFormValues) => {
+  const handleFinish = (values: any) => {
     console.log(`Atualizando Unidade ${id}:`, values);
     alert(`Unidade ${id} atualizada com sucesso! (Mock)`);
     // Aqui você enviaria os dados para a API (PUT/PATCH)
@@ -85,7 +69,7 @@ const UnitEdit: React.FC = () => {
     color: 'var(--color-text-light)',
   };
 
-    if (id && !unitData) {
+  if (loading) {
     return (
         <AppLayout>
             <div style={{ textAlign: 'center', padding: '50px' }}>

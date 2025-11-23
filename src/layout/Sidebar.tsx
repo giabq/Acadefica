@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Layout, Menu, Typography, Button } from 'antd';
-import type { MenuProps } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     UserOutlined, 
@@ -36,8 +35,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse, siderWidth }) 
     return 'dashboard'; 
   };
 
-  const handleMenuClick: MenuProps['onClick'] = (info) => {
-    const { key } = info;
+  const handleMenuClick = (e: any) => {
+    const key = e.key;
     if (key === 'dashboard') {
       navigate('/dashboard');
     } else if (key === 'unidades') { // Nova lógica para a lista
