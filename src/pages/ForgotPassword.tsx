@@ -6,7 +6,7 @@ import { MailOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 const { Content } = Layout;
-const { Title, Paragraph, Link } = Typography;
+const { Title, Paragraph } = Typography;
 
 const ForgotPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
