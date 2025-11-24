@@ -57,7 +57,7 @@ const PricingSection: React.FC = () => {
       <Row gutter={[32, 32]} justify="center">
         {/* Plano Pequeno Porte */}
         <Col xs={24} md={8} lg={6}>
-          <Card title={<Title level={3} style={{ color: 'var(--color-primary-yellow)', margin: 0 }}>Pequeno Porte</Title>} style={cardStyle}>
+          <Card title={<Title level={3} style={{ color: 'var(--color-primary-yellow)', margin: 21.5}}>Pequeno Porte</Title>} style={cardStyle}>
             <div style={{ flexGrow: 1 }}>
                 <Paragraph style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
                     Até 500 alunos
@@ -88,8 +88,8 @@ const PricingSection: React.FC = () => {
           <Card 
             title={
               <div>
-                <Title level={3} style={{ color: 'var(--color-primary-yellow)', margin: 0 }}>Médio Porte</Title>
-                <Paragraph style={{ color: 'var(--color-primary-yellow)', fontSize: '12px', margin: '5px 0 0', fontWeight: 'bold' }}>🔥 MAIS POPULAR</Paragraph>
+                <Title level={3} style={{ color: 'var(--color-primary-yellow)', margin: 10, marginBottom: 5}}>Médio Porte</Title>
+                <Paragraph style={{ color: 'var(--color-primary-yellow)', fontSize: '12px', fontWeight: 'bold', marginBottom:10 }}>🔥 MAIS POPULAR</Paragraph>
               </div>
             } 
             style={{ ...cardStyle, border: '2px solid var(--color-primary-yellow)' }}
@@ -122,7 +122,7 @@ const PricingSection: React.FC = () => {
 
         {/* Plano Grande Porte */}
         <Col xs={24} md={8} lg={6}>
-          <Card title={<Title level={3} style={{ color: 'var(--color-primary-yellow)', margin: 0 }}>Grande Porte</Title>} style={cardStyle}>
+          <Card title={<Title level={3} style={{ color: 'var(--color-primary-yellow)', margin: 21.5}}>Grande Porte</Title>} style={cardStyle}>
             <div style={{ flexGrow: 1 }}>
                 <Paragraph style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
                     Mais de 2.000 alunos
