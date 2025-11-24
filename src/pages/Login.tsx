@@ -89,7 +89,7 @@ const Login: React.FC = () => {
               htmlType="submit"
               loading={loading}
               block
-              style={{ height: '45px', fontWeight: 'bold', fontSize: '16px', marginTop: '16px' }}
+              style={{ height: '45px', fontWeight: 'bold', fontSize: '16px', color:'#2B2B2B', marginTop: '16px' }}
             >
               Entrar
             </Button>
