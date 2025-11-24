@@ -50,7 +50,6 @@ const UnitEdit: React.FC = () => {
 
   const handleFinish = (values: any) => {
     console.log(`Atualizando Unidade ${id}:`, values);
-    alert(`Unidade ${id} atualizada com sucesso! (Mock)`);
     // Aqui você enviaria os dados para a API (PUT/PATCH)
     navigate(`/unidades/${id}`); // Volta para a página de detalhes
   };

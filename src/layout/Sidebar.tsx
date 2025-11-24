@@ -46,7 +46,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse, siderWidth }) 
     } else if (key === 'add-unit') { // Chave para o novo item de menu
       navigate('/unidades/nova');
     } else if (key === 'logout') {
-        alert('Fazendo logout...');
         navigate('/');
     }
   };

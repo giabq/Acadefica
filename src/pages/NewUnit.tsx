@@ -14,12 +14,10 @@ const NewUnit: React.FC = () => {
 
   const handleFinish = (values: any) => {
     console.log('Dados da Nova Unidade:', values);
-    alert('Nova Unidade cadastrada com sucesso! (Mock)');
     // Aqui você enviaria os dados para a API
   };
 
   const handleBatchImport = () => {
-    alert(`Iniciando importação em lote ...`);
     // Aqui você abriria um modal ou navegaria para uma tela de upload
   };
 

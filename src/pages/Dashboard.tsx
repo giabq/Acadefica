@@ -140,7 +140,6 @@ const Dashboard: React.FC = () => {
       if (file) {
           // AQUI VIRIA A LÓGICA DE ENVIO PARA O BACKEND
           console.log("Arquivo selecionado:", file.name);
-          alert(`Arquivo "${file.name}" selecionado para processamento!`);
           
           // Fecha o modal e limpa o input para permitir selecionar o mesmo arquivo novamente se falhar
           setIsModalOpen(false);

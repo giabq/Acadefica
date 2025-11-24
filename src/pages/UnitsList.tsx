@@ -127,7 +127,6 @@ const UnitsList: React.FC = () => {
         label: 'Editar Unidade',
         icon: <EditOutlined />,
         onClick: () => {
-          alert(`Abrir edição: ${unit.nome}`);
         },
       },
       {
@@ -141,7 +140,6 @@ const UnitsList: React.FC = () => {
         label: 'Arquivar Unidade',
         icon: <FolderOutlined />, 
         danger: true, 
-        onClick: () => alert(`Arquivar: ${unit.nome}`),
       },
   ];
 

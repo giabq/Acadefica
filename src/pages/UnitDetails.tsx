@@ -53,12 +53,10 @@ const UnitDetails: React.FC = () => {
   
   // Ações
   const handleBatchImport = () => {
-    alert(`Iniciando importação em lote para a ${unit.nome} (ID: ${id})...`);
     // Aqui você abriria um modal ou navegaria para uma tela de upload
   };
   
   const handleEdit = () => {
-      alert(`Navegar para a página de edição da ${unit.nome} (Mock)`);
   }
 
   return (
