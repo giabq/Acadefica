@@ -21,6 +21,10 @@ import NewUnit from './pages/NewUnit';
 import UnitsList from './pages/UnitsList';
 import UnitDetails from './pages/UnitDetails';
 import UnitEdit from './pages/UnitEdit';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 
 const { Content } = Layout;
 
@@ -67,6 +71,16 @@ const App: React.FC = () => {
 
           {/* Rota Dinâmica para Edição da Unidade (Nova Rota) */}
           <Route path="/unidades/:id/editar" element={<UnitEdit />} />
+
+          {/* Rotas de Páginas Legais */}
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+
+          {/* Rota de Login */}
+          <Route path="/login" element={<Login />} />
+          
+          {/* Rota de Recuperação de Senha */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
         </Routes>
       </Router>

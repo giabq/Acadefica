@@ -51,7 +51,7 @@ const HeroSection: React.FC = () => {
                             <Button
                                 type="primary"
                                 size="large"
-                                style={{ height: '50px', fontWeight: 'bold', color:'#505050' }}
+                                style={{ height: '50px', fontWeight: 'bold', color: '#505050' }}
                                 onClick={() => scrollToSection('contact')}
                             >
                                 Agendar demonstração

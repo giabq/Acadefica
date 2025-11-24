@@ -14,12 +14,12 @@ const TestimonialsSection: React.FC = () => {
   };
 
   return (
-    <Layout id="testimonials" style={{ padding: '50px', backgroundColor: 'var(--color-dark-background)' }}>
-      <Title level={2} style={{ color: 'var(--color-text-light)', textAlign: 'center', marginBottom: '50px' }}>
+    <Layout id="testimonials" style={{ padding: '70px 50px', backgroundColor: 'var(--color-dark-background)' }}>
+      <Title level={2} style={{ color: 'var(--color-text-light)', textAlign: 'center', marginBottom: '48px' }}>
         Quem Confia no Poder da Previsão
       </Title>
 
-      <Row gutter={[32, 32]} justify="center">
+      <Row gutter={[32, 32]} justify="center" style={{ maxWidth: '1100px', margin: '0 auto' }}>
         {/* Depoimento 1 */}
         <Col xs={24} md={12}>
           <Card style={testimonialCardStyle}>

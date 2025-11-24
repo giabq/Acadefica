@@ -52,8 +52,8 @@ const Header: React.FC<HeaderProps> = ({ isInternalPage = false }) => {
   }, [isInternalPage]);
   
   const handleLogin = React.useCallback(() => {
-    window.open('https://app.acadefica.com/login', '_blank', 'noopener,noreferrer');
-  }, []);
+    navigate('/login');
+  }, [navigate]);
 
   const handleScheduleDemo = React.useCallback(() => {
     const contactSection = document.getElementById('contact');
