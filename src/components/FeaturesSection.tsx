@@ -71,33 +71,92 @@ const FeaturesSection: React.FC = () => {
         </Row>
 
         {/* SEÇÃO 2: BENEFÍCIOS */}
-        <Title level={2} style={{ color: 'var(--color-text-light)', textAlign: 'center', marginBottom: '36px', marginTop: '60px' }}>
-          Resultados Que Você Pode Ver na Mensalidade.
+        <Title level={2} style={{ color: 'var(--color-text-light)', textAlign: 'center', marginBottom: '16px', marginTop: '60px' }}>
+          Resultados Que Você Pode Ver na Mensalidade
         </Title>
+        <Paragraph style={{ color: 'var(--color-text-secondary)', textAlign: 'center', maxWidth: '700px', margin: '0 auto 48px', fontSize: '16px' }}>
+          Academias que usam Acadefica aumentam receita e reduzem custos comprovadamente.
+        </Paragraph>
 
-        <Row gutter={[32, 32]} justify="center">
+        <Row gutter={[32, 32]} justify="center" style={{ alignItems: 'stretch' }}>
           {/* Benefício 1: Retenção */}
-          <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
-            <LineChartOutlined style={iconStyle} />
-            <Title level={4} style={{ color: 'var(--color-text-light)' }}>Aumento de Retenção em até X%</Title>
+          <Col xs={24} sm={12} lg={6} style={{ display: 'flex' }}>
+            <Card 
+              style={{ 
+                textAlign: 'center', 
+                backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                width: '100%'
+              }}
+              bodyStyle={{ padding: '32px 24px' }}
+            >
+              <LineChartOutlined style={{ fontSize: '48px', color: '#22C55E', marginBottom: '16px' }} />
+              <Title level={2} style={{ color: '#22C55E', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>+28%</Title>
+              <Title level={4} style={{ color: 'var(--color-text-light)', margin: '0 0 8px' }}>Aumento de Retenção</Title>
+              <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: 0, fontSize: '14px' }}>
+                Seus alunos ficam mais tempo. Mais receita recorrente.
+              </Paragraph>
+            </Card>
           </Col>
           
           {/* Benefício 2: Custos */}
-          <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
-            <DollarOutlined style={iconStyle} />
-            <Title level={4} style={{ color: 'var(--color-text-light)' }}>Redução de Custos de Aquisição</Title>
+          <Col xs={24} sm={12} lg={6} style={{ display: 'flex' }}>
+            <Card 
+              style={{ 
+                textAlign: 'center', 
+                backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                width: '100%'
+              }}
+              bodyStyle={{ padding: '32px 24px' }}
+            >
+              <DollarOutlined style={{ fontSize: '48px', color: '#3B82F6', marginBottom: '16px' }} />
+              <Title level={2} style={{ color: '#3B82F6', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>-45%</Title>
+              <Title level={4} style={{ color: 'var(--color-text-light)', margin: '0 0 8px' }}>Redução de CAC</Title>
+              <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: 0, fontSize: '14px' }}>
+                Menos gastos com aquisição. Foque em quem já está dentro.
+              </Paragraph>
+            </Card>
           </Col>
 
           {/* Benefício 3: Relatórios */}
-          <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
-            <BarChartOutlined style={iconStyle} />
-            <Title level={4} style={{ color: 'var(--color-text-light)' }}>Relatórios Intuitivos</Title>
+          <Col xs={24} sm={12} lg={6} style={{ display: 'flex' }}>
+            <Card 
+              style={{ 
+                textAlign: 'center', 
+                backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                width: '100%'
+              }}
+              bodyStyle={{ padding: '32px 24px' }}
+            >
+              <BarChartOutlined style={{ fontSize: '48px', color: '#A855F7', marginBottom: '16px' }} />
+              <Title level={2} style={{ color: '#A855F7', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>100%</Title>
+              <Title level={4} style={{ color: 'var(--color-text-light)', margin: '0 0 8px' }}>Visibilidade Total</Title>
+              <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: 0, fontSize: '14px' }}>
+                Dashboards intuitivos. Decisões baseadas em dados reais.
+              </Paragraph>
+            </Card>
           </Col>
 
           {/* Benefício 4: Integração */}
-          <Col xs={24} sm={12} lg={6} style={{ textAlign: 'center' }}>
-            <SettingOutlined style={iconStyle} />
-            <Title level={4} style={{ color: 'var(--color-text-light)' }}>Integração Flexível</Title>
+          <Col xs={24} sm={12} lg={6} style={{ display: 'flex' }}>
+            <Card 
+              style={{ 
+                textAlign: 'center', 
+                backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                width: '100%'
+              }}
+              bodyStyle={{ padding: '32px 24px' }}
+            >
+              <SettingOutlined style={{ fontSize: '48px', color: '#FFD700', marginBottom: '16px' }} />
+              <Title level={2} style={{ color: '#FFD700', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>24h</Title>
+              <Title level={4} style={{ color: 'var(--color-text-light)', margin: '0 0 8px' }}>Setup Rápido</Title>
+              <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: 0, fontSize: '14px' }}>
+                Integração com seus sistemas em menos de 1 dia.
+              </Paragraph>
+            </Card>
           </Col>
         </Row>
       </div>
