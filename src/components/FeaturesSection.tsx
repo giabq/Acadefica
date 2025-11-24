@@ -90,8 +90,8 @@ const FeaturesSection: React.FC = () => {
               }}
               bodyStyle={{ padding: '32px 24px' }}
             >
-              <LineChartOutlined style={{ fontSize: '48px', color: '#22C55E', marginBottom: '16px' }} />
-              <Title level={2} style={{ color: '#22C55E', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>+28%</Title>
+              <LineChartOutlined style={{ fontSize: '48px', color: '#FFD700', marginBottom: '16px' }} />
+              <Title level={2} style={{ color: '#FFD700', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>+28%</Title>
               <Title level={4} style={{ color: 'var(--color-text-light)', margin: '0 0 8px' }}>Aumento de Retenção</Title>
               <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: 0, fontSize: '14px' }}>
                 Seus alunos ficam mais tempo. Mais receita recorrente.
@@ -110,8 +110,8 @@ const FeaturesSection: React.FC = () => {
               }}
               bodyStyle={{ padding: '32px 24px' }}
             >
-              <DollarOutlined style={{ fontSize: '48px', color: '#3B82F6', marginBottom: '16px' }} />
-              <Title level={2} style={{ color: '#3B82F6', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>-45%</Title>
+              <DollarOutlined style={{ fontSize: '48px', color: '#FFD700', marginBottom: '16px' }} />
+              <Title level={2} style={{ color: '#FFD700', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>-45%</Title>
               <Title level={4} style={{ color: 'var(--color-text-light)', margin: '0 0 8px' }}>Redução de CAC</Title>
               <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: 0, fontSize: '14px' }}>
                 Menos gastos com aquisição. Foque em quem já está dentro.
@@ -130,8 +130,8 @@ const FeaturesSection: React.FC = () => {
               }}
               bodyStyle={{ padding: '32px 24px' }}
             >
-              <BarChartOutlined style={{ fontSize: '48px', color: '#A855F7', marginBottom: '16px' }} />
-              <Title level={2} style={{ color: '#A855F7', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>100%</Title>
+              <BarChartOutlined style={{ fontSize: '48px', color: '#FFD700', marginBottom: '16px' }} />
+              <Title level={2} style={{ color: '#FFD700', margin: '0 0 8px', fontSize: '48px', fontWeight: 'bold' }}>100%</Title>
               <Title level={4} style={{ color: 'var(--color-text-light)', margin: '0 0 8px' }}>Visibilidade Total</Title>
               <Paragraph style={{ color: 'var(--color-text-secondary)', marginBottom: 0, fontSize: '14px' }}>
                 Dashboards intuitivos. Decisões baseadas em dados reais.
