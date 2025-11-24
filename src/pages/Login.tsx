@@ -5,6 +5,9 @@ import { Layout, Typography, Form, Input, Button, message, Space } from 'antd';
 import { UserOutlined, LockOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
+import logo from '../assets/logo-acadefica.png';
+
+
 const { Content } = Layout;
 const { Title, Paragraph, Link } = Typography;
 
@@ -41,9 +44,8 @@ const Login: React.FC = () => {
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <Title level={1} style={{ color: 'var(--color-primary-yellow)', marginBottom: '8px' }}>
-            ACADEFICA
-          </Title>
+          <Title level={1} style={{}}>          </Title>
+          <img src={logo} alt="Logo da Acadefica"></img>            
           <Paragraph style={{ color: 'var(--color-text-secondary)', fontSize: '16px' }}>
             Entre na sua conta
           </Paragraph>
