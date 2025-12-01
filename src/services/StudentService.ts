@@ -1,93 +1,86 @@
-// src/services/StudentService.ts
-
 import api from './api';
 import type { StudentBackendData, PredictionData } from '../types/ApiTypes';
 
-// 1. Pegar nome da Academia
+// --- Funções Existentes ---
+
 export const getGymName = async (): Promise<string> => {
     const response = await api.get<string>('/get-gym-name');
     return response.data;
 };
 
-// 2. Pegar todos os alunos
 export const getAllStudents = async (): Promise<StudentBackendData[]> => {
     const response = await api.get<StudentBackendData[]>('/get-students');
     return response.data;
 };
 
-// 3. Pegar alunos por unidade
-export const getStudentsByUnit = async (unit: string): Promise<StudentBackendData[]> => {
-    const response = await api.get<StudentBackendData[]>('/get-students-by-unit', {
-        params: { unit } // O axios converte isso para ?unit=centro
-    });
-    return response.data;
-};
-
-// 4. Pegar info de um aluno específico
-export const getStudentInfo = async (id: number): Promise<StudentBackendData> => {
-    const response = await api.get<StudentBackendData>('/get-student-info', {
-        params: { id }
-    });
-    return response.data;
-};
-// 5. Pegar predições (Lista) - REMOVIDO O PARAMETRO
 export const getStudentsPredictions = async (): Promise<PredictionData[]> => {
-   
-
-    // Opcionalmente, você pode manter o timeout na leitura também, por segurança
-    const response = await api.get<PredictionData[]>('/get-students-predictions', { 
-        timeout: 90000 
-    });
-    
+    // Mantemos o timeout estendido para o pipeline
+    await api.post<any>('/run-pipeline', { timeout: 90000 });
+    const response = await api.get<PredictionData[]>('/get-students-predictions', { timeout: 90000 });
     return response.data;
 };
 
-// 6. Pegar predição única - REMOVIDO O PARAMETRO
-export const getStudentPrediction = async (id: number): Promise<PredictionData> => {
-    const response = await api.get<PredictionData>('/get-student-prediction', {
-        params: { id }
-    });
-    return response.data;
-};
-
-// 7. Pegar porcentagem de evasão - REMOVIDO O PARAMETRO
-export const getEvasionPercentage = async (): Promise<number> => {
-    const response = await api.get<number>('/get-student-evasion-percentage');
-    return response.data; 
-};
-
-// src/services/StudentService.ts
-
-// ... (outros imports e funções)
-
-// 8. Pegar porcentagem de evasão POR UNIDADE
-export const getEvasionPercentageByUnit = async (unit: string): Promise<number> => {
-    try {
-        const response = await api.get<number>('/get-student-evasion-percentage-by-unit', {
-            params: { unit }
-        });
-        return response.data; 
-    } catch (error) {
-        console.error(`Erro ao buscar evasão para ${unit}:`, error);
-        return 0; // Retorna 0 em caso de erro para não quebrar a tela
-    }
-};
-
-// 9. Upload de CSV de Alunos (Rota POST)
 export const uploadStudentsCsv = async (file: File): Promise<any> => {
     const formData = new FormData();
-    // 'file' é o nome do campo que o FastAPI espera (UploadFile file)
     formData.append('file', file); 
-
     try {
         const response = await api.post('/upload-csv', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+            headers: { 'Content-Type': 'multipart/form-data' },
         });
         return response.data;
     } catch (error) {
         console.error("Erro ao fazer upload do CSV:", error);
-        throw error; // Repassa o erro para a tela tratar
+        throw error;
     }
+};
+
+// --- NOVAS FUNÇÕES DE ESTATÍSTICAS ---
+
+export const getNumberOfStudents = async (): Promise<number> => {
+    const response = await api.get<number>('/get-statistics/number-of-students');
+    return response.data;
+};
+
+export const getObjectiveMode = async (): Promise<string> => {
+    const response = await api.get<string>('/get-statistics/objective-mode');
+    // Remove aspas se vierem na string bruta
+    return String(response.data).replace(/"/g, '');
+};
+
+export const getStudentsCountPerUnit = async (): Promise<Record<string, number>> => {
+    const response = await api.get<Record<string, number>>('/get-statistics/number-of-students-per-unit');
+    return response.data;
+};
+
+export const getAverageAge = async (): Promise<number> => {
+    const response = await api.get<number>('/get-statistics/average-age');
+    return response.data;
+};
+
+export const getAverageTimeAsStudent = async (): Promise<number> => {
+    const response = await api.get<number>('/get-statistics/average-time-as-student');
+    return response.data;
+};
+
+// Se week=0 retorna média geral, senão média da semana específica
+export const getAverageCheckins = async (week: number = 0): Promise<number> => {
+    const response = await api.get<number>('/get-statistics/average-checkins', {
+        params: { week }
+    });
+    return response.data;
+};
+
+export const getAverageWeightVariation = async (): Promise<number> => {
+    const response = await api.get<number>('/get-statistics/average-weight-variation');
+    return response.data;
+};
+
+export const getAverageBodyFatVariation = async (): Promise<number> => {
+    const response = await api.get<number>('/get-statistics/average-body-fat-variation');
+    return response.data;
+};
+
+export const getAverageLoadVariation = async (): Promise<number> => {
+    const response = await api.get<number>('/get-statistics/average-load-variation');
+    return response.data;
 };
