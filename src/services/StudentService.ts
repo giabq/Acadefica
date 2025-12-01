@@ -14,8 +14,6 @@ export const getAllStudents = async (): Promise<StudentBackendData[]> => {
 };
 
 export const getStudentsPredictions = async (): Promise<PredictionData[]> => {
-    // Mantemos o timeout estendido para o pipeline
-    await api.post<any>('/run-pipeline', { timeout: 90000 });
     const response = await api.get<PredictionData[]>('/get-students-predictions', { timeout: 90000 });
     return response.data;
 };
