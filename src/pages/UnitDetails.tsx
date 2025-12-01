@@ -1,15 +1,17 @@
 // src/pages/UnitDetailsPage.tsx
 
-import React from 'react';
-import { Typography, Card, Row, Col, Button, Descriptions, Space } from 'antd';
+import React, { useRef, useState } from 'react'; // Adicionado useRef e useState
+import { Typography, Card, Row, Col, Button, Descriptions, Space, message } from 'antd'; // Adicionado message
 import { useParams, useNavigate } from 'react-router-dom';
-import { FileExcelOutlined, ArrowLeftOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { EditOutlined } from '@ant-design/icons';
+import {  ArrowLeftOutlined, MailOutlined, PhoneOutlined, UserOutlined, EditOutlined } from '@ant-design/icons';
 import AppLayout from '../layout/AppLayout';
+
+// Importação do serviço de upload
+import { uploadStudentsCsv } from '../services/StudentService';
 
 const { Title, Paragraph, Text } = Typography;
 
-// Mock de dados para uma unidade (simulando a busca pelo ID)
+// Mock de dados (Mantido igual)
 const mockUnitData = (id: string) => ({
   nome: `Unidade Centro (ID: ${id})`,
   localizacao: 'Avenida Paulista, 1000 - São Paulo/SP',
@@ -24,14 +26,50 @@ const mockUnitData = (id: string) => ({
 });
 
 const UnitDetails: React.FC = () => {
-  // 1. Capturar o ID da URL
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
-  // 2. Buscar os dados (Mock)
+  // Ref para o input de arquivo oculto
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  // Estado para controlar o loading do botão
+  const [uploading, setUploading] = useState(false);
+
   const unit = mockUnitData(id || 'N/A');
 
-  // Estilos de card e container
+ 
+
+  // 2. Função chamada quando o usuário seleciona o arquivo
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    
+    if (!file) return;
+
+    // Validação simples de extensão
+    if (!file.name.endsWith('.csv')) {
+        message.error('Por favor, selecione um arquivo .csv válido.');
+        return;
+    }
+
+    setUploading(true); // Ativa o spinner no botão
+
+    try {
+        await uploadStudentsCsv(file);
+        message.success(`Arquivo "${file.name}" enviado com sucesso!`);
+        // Opcional: Recarregar dados da página se necessário
+    } catch (error) {
+        message.error('Falha ao enviar o arquivo. Verifique o formato e tente novamente.');
+    } finally {
+        setUploading(false); // Desativa o spinner
+        // Limpa o input para permitir selecionar o mesmo arquivo novamente se falhar
+        event.target.value = ''; 
+    }
+  };
+  
+  const handleEdit = () => {
+      alert(`Navegar para a página de edição da ${unit.nome} (Mock)`);
+  }
+
+  // Estilos
   const cardStyle: React.CSSProperties = {
     backgroundColor: 'var(--color-secondary-background)',
     color: 'var(--color-text-light)',
@@ -48,21 +86,22 @@ const UnitDetails: React.FC = () => {
   const itemLabelStyle: React.CSSProperties = {
     color: 'var(--color-text-secondary)',
     fontWeight: 'normal',
-    width: '180px', // Largura fixa para labels
+    width: '180px',
   };
-  
-  // Ações
-  const handleBatchImport = () => {
-    // Aqui você abriria um modal ou navegaria para uma tela de upload
-  };
-  
-  const handleEdit = () => {
-  }
 
   return (
     <AppLayout>
       <div style={{ padding: '24px' }}>
         
+        {/* Input Oculto para Upload */}
+        <input 
+            type="file" 
+            ref={fileInputRef}
+            style={{ display: 'none' }} 
+            accept=".csv"
+            onChange={handleFileChange}
+        />
+
         {/* Topo e Título */}
         <Space size="large" style={{ marginBottom: '20px', width: '100%', justifyContent: 'space-between' }}>
             <Title level={2} style={{ color: 'var(--color-text-light)', margin: 0 }}>
@@ -79,14 +118,7 @@ const UnitDetails: React.FC = () => {
                 >
                     Voltar
                 </Button>
-                <Button 
-                    type="primary" 
-                    icon={<FileExcelOutlined />}
-                    onClick={handleBatchImport}
-                    style={{ backgroundColor: 'var(--color-primary-yellow)', color: '#505050', fontWeight: 'bold' }}
-                >
-                    Adicionar Alunos em Batch
-                </Button>
+
                 <Button 
                     type="default" 
                     icon={<EditOutlined />}

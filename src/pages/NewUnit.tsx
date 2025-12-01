@@ -3,7 +3,7 @@
 import React from 'react';
 import {  Typography, Form, Input, Card, Row, Col, Button, Select } from 'antd';
 import AppLayout from '../layout/AppLayout';
-import { SaveOutlined, EnvironmentOutlined, PhoneOutlined, MailOutlined, FileExcelOutlined} from '@ant-design/icons';
+import { SaveOutlined, EnvironmentOutlined, PhoneOutlined, MailOutlined} from '@ant-design/icons';
 
 // CORREÇÃO 1: Desestruturar corretamente Text e Option
 const { Title, Paragraph, Text } = Typography; // <-- AGORA COM TEXT
@@ -15,10 +15,6 @@ const NewUnit: React.FC = () => {
   const handleFinish = (values: any) => {
     console.log('Dados da Nova Unidade:', values);
     // Aqui você enviaria os dados para a API
-  };
-
-  const handleBatchImport = () => {
-    // Aqui você abriria um modal ou navegaria para uma tela de upload
   };
 
   const cardStyle: React.CSSProperties = {
@@ -116,14 +112,6 @@ const NewUnit: React.FC = () => {
             </Row>
 
             <Form.Item style={{ marginTop: '30px', textAlign: 'right'}}>
-              <Button 
-                    type="primary" 
-                    icon={<FileExcelOutlined />}
-                    onClick={handleBatchImport}
-                    style={{ backgroundColor: 'var(--color-primary-yellow)', color: '#505050', fontWeight: 'bold', marginRight: 10 }}
-                >
-                    Adicionar Alunos em Batch
-                </Button>
                 <Button 
                     type="primary" 
                     htmlType="submit" 

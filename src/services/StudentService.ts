@@ -72,3 +72,22 @@ export const getEvasionPercentageByUnit = async (unit: string): Promise<number> 
         return 0; // Retorna 0 em caso de erro para não quebrar a tela
     }
 };
+
+// 9. Upload de CSV de Alunos (Rota POST)
+export const uploadStudentsCsv = async (file: File): Promise<any> => {
+    const formData = new FormData();
+    // 'file' é o nome do campo que o FastAPI espera (UploadFile file)
+    formData.append('file', file); 
+
+    try {
+        const response = await api.post('/upload-csv', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao fazer upload do CSV:", error);
+        throw error; // Repassa o erro para a tela tratar
+    }
+};
